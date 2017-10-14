@@ -24,3 +24,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 add_executable(UnscentedKF ${sources})
 
 target_link_libraries(UnscentedKF z ssl uv uWS)
+
+# ----------
+# Unit tests
+# ----------
+enable_testing(true)
+
+set(TEST_MAIN src/tests/main.cpp)
+
+add_executable(tools-tests ${TEST_MAIN} src/tests/tools.cpp src/tools.cpp)
+add_test(NAME tools COMMAND tools-tests)
