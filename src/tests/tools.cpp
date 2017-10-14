@@ -20,7 +20,7 @@ TEST_CASE("RMSE working") {
   }
 }
 
-TEST_CASE("Calculate sigma points") {
+TEST_CASE("Sigma points") {
   int n_x = 5;
   VectorXd x = VectorXd(n_x);
   x << 5.7441, 1.3800, 2.2049, 0.5015, 0.3528;
