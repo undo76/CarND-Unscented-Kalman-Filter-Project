@@ -25,6 +25,6 @@ MatrixXd generateSigmaPoints(const VectorXd &x, const MatrixXd &P,
  */
 MatrixXd generateAugmentedSigmaPoints(const VectorXd &x, const MatrixXd &P,
                                       double lambda, const VectorXd &sigma);
-};
+}
 
 #endif /* TOOLS_H_ */
