@@ -28,6 +28,7 @@ target_link_libraries(UnscentedKF z ssl uv uWS)
 # ----------
 # Unit tests
 # ----------
+include(CTest)
 enable_testing(true)
 
 set(TEST_MAIN src/tests/main.cpp)
