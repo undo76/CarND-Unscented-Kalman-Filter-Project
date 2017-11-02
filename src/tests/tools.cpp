@@ -20,6 +20,31 @@ TEST_CASE("RMSE working") {
   }
 }
 
+TEST_CASE("Angle normalization") {
+  double angle;
+  SECTION("Out of bounds positive") {
+    angle = M_PI + 1;
+    Tools::normalizeAngle(angle);
+    REQUIRE(angle > -M_PI);
+    REQUIRE(angle < M_PI);
+  }
+
+  SECTION("Out of bounds negative") {
+    angle = -M_PI - 10;
+    Tools::normalizeAngle(angle);
+    REQUIRE(angle > -M_PI);
+    REQUIRE(angle < M_PI);
+  }
+
+  SECTION("In bounds") {
+    angle = M_PI - 1;
+    Tools::normalizeAngle(angle);
+    REQUIRE(angle > -M_PI);
+    REQUIRE(angle < M_PI);
+    REQUIRE(angle == M_PI - 1);
+  }
+}
+
 TEST_CASE("Sigma points") {
   int n_x = 5;
   VectorXd x = VectorXd(n_x);
@@ -37,7 +62,7 @@ TEST_CASE("Sigma points") {
   // clang-format on
 
   SECTION("No augmentation") {
-    double lambda = 3 - n_x;    
+    double lambda = 3 - n_x;
     MatrixXd Xsig = Tools::generateSigmaPoints(x, P, lambda);
 
     // clang-format off
@@ -58,7 +83,7 @@ TEST_CASE("Sigma points") {
     sigma << .2, .2;
 
     int n_aug = x.size() + sigma.size();
-    double lambda = 3 - n_aug;    
+    double lambda = 3 - n_aug;
 
     MatrixXd Xsig = Tools::generateAugmentedSigmaPoints(x, P, lambda, sigma);
 

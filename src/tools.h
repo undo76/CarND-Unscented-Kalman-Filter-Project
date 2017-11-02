@@ -25,6 +25,11 @@ MatrixXd generateSigmaPoints(const VectorXd &x, const MatrixXd &P,
  */
 MatrixXd generateAugmentedSigmaPoints(const VectorXd &x, const MatrixXd &P,
                                       double lambda, const VectorXd &sigma);
+
+/**
+ * Normalize angle to [-M_PI, M_PI] in place.
+ */
+void normalizeAngle(double &angle);
 }
 
 #endif /* TOOLS_H_ */
