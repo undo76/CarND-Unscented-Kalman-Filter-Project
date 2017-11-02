@@ -25,10 +25,10 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = .3;
+  std_a_ = 3;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = .1;
+  std_yawdd_ = .2;
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -199,8 +199,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
     Tc += weights_(i) * x_diff * z_diff.transpose();
   }
 
-  // Kalman gain K;
-  MatrixXd K = Tc * S.inverse();
+  // Kalman gain K
+  MatrixXd S_inv = S.inverse();
+  MatrixXd K = Tc * S_inv;
 
   // residual
   VectorXd z = meas_package.raw_measurements_;
@@ -210,6 +211,9 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   x_ += K * z_diff;
   Tools::normalizeAngle(x_(3));
   P_ -= K * S * K.transpose();
+
+  // Update NIS
+  NIS_ = Tools::NIS(z_diff, S_inv);
 }
 
 /**
@@ -281,20 +285,21 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
     Tc += weights_(i) * x_diff * z_diff.transpose();
   }
 
-  // Kalman gain K;
-  MatrixXd K = Tc * S.inverse();
+  // Kalman gain K
+  MatrixXd S_inv = S.inverse();
+  MatrixXd K = Tc * S_inv;
 
   // residual
   VectorXd z = meas_package.raw_measurements_;
   VectorXd z_diff = z - z_pred;
 
-  // angle normalization
-  Tools::normalizeAngle(z_diff(1));
-
   // update state mean and covariance matrix
   x_ += K * z_diff;
   Tools::normalizeAngle(x_(3));
   P_ -= K * S * K.transpose();
+
+  // Update NIS
+  NIS_ = Tools::NIS(z_diff, S_inv);
 }
 
 void UKF::PredictSigmaPoints(const MatrixXd &sigma_points, double delta_t) {

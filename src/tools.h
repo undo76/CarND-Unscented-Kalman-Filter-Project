@@ -30,6 +30,11 @@ MatrixXd generateAugmentedSigmaPoints(const VectorXd &x, const MatrixXd &P,
  * Normalize angle to [-M_PI, M_PI] in place.
  */
 void normalizeAngle(double &angle);
+
+/**
+ * Calculate NIS 
+ */
+double NIS(const VectorXd &z_diff, const MatrixXd &Sinv);
 }
 
 #endif /* TOOLS_H_ */

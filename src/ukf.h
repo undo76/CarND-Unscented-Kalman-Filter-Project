@@ -66,6 +66,9 @@ class UKF {
   ///* Sigma point spreading parameter
   double lambda_;
 
+  ///* NIS for lidar and radar
+  double NIS_;
+  
   /**
    * Constructor
    */

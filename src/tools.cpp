@@ -74,4 +74,9 @@ void normalizeAngle(double &angle) {
   while (angle > M_PI) angle -= 2. * M_PI;
   while (angle < -M_PI) angle += 2. * M_PI;
 }
+
+double NIS(const VectorXd &z_diff, const MatrixXd &Sinv) {
+  return z_diff.transpose() * Sinv * z_diff;
+}
+
 }

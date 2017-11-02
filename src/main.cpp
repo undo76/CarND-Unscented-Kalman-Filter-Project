@@ -125,6 +125,18 @@ int main() {
 
           VectorXd RMSE = Tools::calculateRMSE(estimations, ground_truth);
 
+          // Dump values and estimates to stdout
+          std::cout << sensor_type << ",";
+          std::cout << gt_values(0) << ",";
+          std::cout << gt_values(1) << ",";
+          std::cout << gt_values(2) << ",";
+          std::cout << gt_values(3) << ",";
+          std::cout << estimate(0) << ",";
+          std::cout << estimate(1) << ",";
+          std::cout << estimate(2) << ",";
+          std::cout << estimate(3) << ",";
+          std::cout << ukf.NIS_ << std::endl;
+
           json msgJson;
           msgJson["estimate_x"] = p_x;
           msgJson["estimate_y"] = p_y;
@@ -159,18 +171,18 @@ int main() {
   });
 
   h.onConnection([&h](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req) {
-    std::cout << "Connected!!!" << std::endl;
+    std::cerr << "Connected!!!" << std::endl;
   });
 
   h.onDisconnection([&h](uWS::WebSocket<uWS::SERVER> ws, int code,
                          char *message, size_t length) {
     ws.close();
-    std::cout << "Disconnected" << std::endl;
+    std::cerr << "Disconnected" << std::endl;
   });
 
   int port = 4567;
   if (h.listen(port)) {
-    std::cout << "Listening to port " << port << std::endl;
+    std::cerr << "Listening to port " << port << std::endl;
   } else {
     std::cerr << "Failed to listen to port" << std::endl;
     return -1;
