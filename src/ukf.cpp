@@ -28,7 +28,7 @@ UKF::UKF() {
   std_a_ = 3;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = .2;
+  std_yawdd_ = .5;
 
   // Laser measurement noise standard deviation position1 in m
   std_laspx_ = 0.15;
@@ -40,10 +40,10 @@ UKF::UKF() {
   std_radr_ = 0.3;
 
   // Radar measurement noise standard deviation angle in rad
-  std_radphi_ = 0.0175;
+  std_radphi_ = 0.03;
 
   // Radar measurement noise standard deviation radius change in m/s
-  std_radrd_ = 0.1;
+  std_radrd_ = 0.3;
 
   // State dimension
   n_x_ = x_.size();
@@ -81,6 +81,14 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
                 10, 
                 0, 
                 0;
+               // clang-format 
+               
+        P_ <<  // clang-format off
+                .1, 0, 0, 0, 0,
+                0, .1, 0, 0, 0, 
+                0, 0, 20, 0, 0, 
+                0, 0, 0, 10, 0, 
+                0, 0, 0, 0, 10;
                // clang-format on
         break;
       }
@@ -92,16 +100,16 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
                 0, 
                 0;
                // clang-format on
+
+        P_ <<  // clang-format off
+                .15, 0, 0, 0, 0,
+                0, 15, 0, 0, 0, 
+                0, 0, 20, 0, 0, 
+                0, 0, 0, 10, 0, 
+                0, 0, 0, 0, 10;
+               // clang-format on
         break;
     }
-
-    P_ <<  // clang-format off
-              .1, 0, 0, 0, 0,
-              0, .1, 0, 0, 0, 
-              0, 0, 100, 0, 0, 
-              0, 0, 0, 10, 0, 
-              0, 0, 0, 0, 10;
-           // clang-format on
 
     time_us_ = meas_package.timestamp_;
     is_initialized_ = true;
